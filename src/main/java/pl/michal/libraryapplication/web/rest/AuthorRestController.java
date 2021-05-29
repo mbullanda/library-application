@@ -8,15 +8,18 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import pl.michal.libraryapplication.mapper.AuthorToAuthorResponseMapper;
 import pl.michal.libraryapplication.model.Author;
+import pl.michal.libraryapplication.model.Book;
 import pl.michal.libraryapplication.repository.AuthorRepository;
 import pl.michal.libraryapplication.service.AuthorService;
 import pl.michal.libraryapplication.mapper.CreateAuthorRequestToAuthorMapper;
+import pl.michal.libraryapplication.service.BookService;
 import pl.michal.libraryapplication.web.rest.dto.AuthorResponse;
 import pl.michal.libraryapplication.web.rest.dto.CreateAuthorRequest;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,6 +28,7 @@ import java.util.stream.Collectors;
 public class AuthorRestController {
 
     private AuthorService authorService;
+    private BookService bookService;
     private AuthorToAuthorResponseMapper authorMapper;
     private CreateAuthorRequestToAuthorMapper createAuthorRequestToAuthorMapper;
 
@@ -56,9 +60,14 @@ public class AuthorRestController {
         return authorMapper.toResponse(authorService.findById(id));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable Long id){
+        Author author = authorService.findById(id);
+        Set<Book> books = author.getBooks();
+        books.stream()
+                .map(book -> book.getId())
+                .forEach(bookService::deleteById);
         authorService.deleteById(id);
     }
 
