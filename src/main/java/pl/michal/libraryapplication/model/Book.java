@@ -1,9 +1,6 @@
 package pl.michal.libraryapplication.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -13,6 +10,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode(exclude = "author")
+@ToString(exclude = "author")
 public class Book {
 
     @Id
@@ -22,7 +21,6 @@ public class Book {
     @Column(unique = true)
     private String isbn;
     private int numberOfPages;
-
-//    private Set<Tag> tags;
-//    private User user;
+    @ManyToOne
+    private Author author;
 }
