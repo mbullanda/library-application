@@ -23,7 +23,7 @@ public class Author {
     private Long id;
     private String name;
     private String lastName;
-    @OneToMany
+    @OneToMany(mappedBy = "author")
     @Builder.Default
     private Set<Book> books = new HashSet<>();
 
