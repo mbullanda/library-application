@@ -13,6 +13,7 @@ public class BookToBookResponseMapper {
                 .title(book.getTitle())
                 .isbn(book.getIsbn())
                 .numberOfPages(book.getNumberOfPages())
+                .authorId(book.getAuthor().getId())
                 .build();
     }
 }

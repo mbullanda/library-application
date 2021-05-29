@@ -4,17 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.michal.libraryapplication.model.Author;
+
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class BookResponse {
-
+public class AuthorResponse {
     private Long id;
-    private String title;
-    private String isbn;
-    private int numberOfPages;
-    private long authorId;
+    private String name;
+    private String lastName;
+    private Set<Long> booksId;
 }
