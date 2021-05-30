@@ -40,6 +40,16 @@ public class BookRestController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/author/{authorId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookResponse> getBooksByAuthorId(@PathVariable Long authorId){
+        return bookService.findByAuthorId(authorId)
+                .stream()
+                .map(bookMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public BookResponse findById(@PathVariable Long id){
@@ -66,6 +76,20 @@ public class BookRestController {
         bookToCreate.getAuthor().getBooks().add(bookToCreate);
         return new ResponseEntity<>(bookMapper.toResponse(bookService.createBook(bookToCreate)), HttpStatus.CREATED);
     }
+
+    @GetMapping("/isbn/{isbn}")
+    @ResponseStatus(HttpStatus.OK)
+    public BookResponse findByIsbn(@PathVariable String isbn){
+        return bookMapper.toResponse(bookService.findByIsbn(isbn));
+    }
+
+    @GetMapping("/isbn")
+    @ResponseStatus(HttpStatus.OK)
+    public BookResponse findByIsbnByQueryParams(@RequestParam(value = "isbn", required = true) String isbn){
+        return bookMapper.toResponse(bookService.findByIsbn(isbn));
+    }
+
+
 
 
 }
