@@ -3,6 +3,7 @@ package pl.michal.libraryapplication.service;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import pl.michal.libraryapplication.exception.MissingBookByIsbnException;
 import pl.michal.libraryapplication.exception.MissingBookException;
 import pl.michal.libraryapplication.mapper.CreateBookRequestToBookMapper;
 import pl.michal.libraryapplication.model.Book;
@@ -32,5 +33,14 @@ public class BookService {
 
     public Book createBook(Book book) {
         return bookRepository.save(book);
+    }
+
+    public Book findByIsbn(String isbn){
+        return bookRepository.findByIsbn(isbn)
+                .orElseThrow(()-> new MissingBookByIsbnException(isbn));
+    }
+
+    public List<Book> findByAuthorId(Long authorId) {
+        return bookRepository.findByAuthor_Id(authorId);
     }
 }
